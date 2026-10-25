@@ -25,6 +25,7 @@ jobs:
         run: ./gradlew lintDebug --console=plain
       - name: Debug APK
         run: ./gradlew assembleDebug --console=plain
+      # stesso controllo della release, che con apksigner 37 aveva letto un'impronta vuota
       - name: apksigner reads the signature
         run: |
           set -o pipefail
