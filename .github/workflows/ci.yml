@@ -25,6 +25,14 @@ jobs:
         run: ./gradlew lintDebug --console=plain
       - name: Debug APK
         run: ./gradlew assembleDebug --console=plain
+      - name: apksigner reads the signature
+        run: |
+          set -o pipefail
+          ls "$ANDROID_HOME/build-tools"
+          apksigner=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
+          echo "apksigner: $apksigner"
+          "$apksigner" verify --print-certs app/build/outputs/apk/debug/app-debug.apk | tee certs.txt
+          grep -q "certificate SHA-256 digest: " certs.txt
       - uses: actions/upload-artifact@v7
         with:
           name: openwisp-android-debug
