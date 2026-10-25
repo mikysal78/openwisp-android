@@ -2,6 +2,8 @@
 
 [🇬🇧 English](README.md) · 🇮🇹 Italiano
 
+> 📖 Questo repository fa parte dell'infrastruttura di **NINUX Basilicata**: la guida per ricostruirla tutta, passo passo (Proxmox, DNS, OpenWISP, moduli, firmware, app), è su **[docs.ninux-nnxx.it](https://docs.ninux-nnxx.it)**.
+
 Un'app Android per gestire un server [OpenWISP](https://openwisp.org) dal
 telefono, tramite le API REST di OpenWISP: dispositivi e loro stato, azioni
 sui router, utenti e sessioni Wi-Fi, notifiche in background.

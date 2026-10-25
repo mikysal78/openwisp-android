@@ -2,6 +2,8 @@
 
 🇬🇧 English · [🇮🇹 Italiano](README.it.md)
 
+> 📖 This repository is part of the **NINUX Basilicata** infrastructure: the step-by-step guide to rebuild all of it (Proxmox, DNS, OpenWISP, modules, firmware, app) is at **[docs.ninux-nnxx.it](https://docs.ninux-nnxx.it/en/)**.
+
 An Android app to manage an [OpenWISP](https://openwisp.org) server from the
 phone, through the REST API of OpenWISP: devices and their status, actions on
 the routers, Wi-Fi users and sessions, notifications in the background.
