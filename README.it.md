@@ -10,6 +10,10 @@ sui router, utenti e sessioni Wi-Fi, notifiche in background.
 Basilicata. Funziona con qualsiasi server OpenWISP; non è un progetto
 ufficiale di OpenWISP.
 
+| Dispositivi | Dispositivo | Grafici | Netconsole |
+|---|---|---|---|
+| ![Dispositivi](docs/devices.png) | ![Pagina del dispositivo](docs/device.png) | ![Grafici del monitoring](docs/charts.png) | ![Netconsole](docs/netconsole.png) |
+
 ## 🧪 Diventa tester
 
 L'app è giovane e ci piacerebbe provarla sul maggior numero possibile di
@@ -120,17 +124,78 @@ utente e la password. La password viene inviata una sola volta a
 
 Segnala le vulnerabilità in privato: vedi [SECURITY.md](SECURITY.md).
 
-## Sviluppo
+## Compilare l'APK
 
-Requisiti: JDK 17 o successivo e l'Android SDK (piattaforma 36).
+L'app si compila con Gradle (il wrapper è nel repository: scarica da solo la
+versione giusta di Gradle e ne controlla lo SHA-256). Servono un **JDK 17 o
+successivo** e gli strumenti da riga di comando dell'**Android SDK**; Android
+Studio non è necessario.
 
-```bash
-./gradlew testDebugUnitTest lintDebug   # test e lint
-./gradlew assembleDebug                 # app/build/outputs/apk/debug/
-```
+1. **JDK** (Debian/Ubuntu):
 
-Build di release: crea `keystore.properties` (fuori da git) con `storeFile`,
-`storePassword`, `keyAlias` e `keyPassword`, poi `./gradlew assembleRelease`.
+   ```bash
+   sudo apt install openjdk-21-jdk-headless unzip
+   ```
+
+2. **Android SDK**: scarica i *command line tools* da
+   <https://developer.android.com/studio#command-line-tools-only>, poi:
+
+   ```bash
+   mkdir -p ~/Android/Sdk/cmdline-tools
+   unzip commandlinetools-linux-*_latest.zip -d ~/Android/Sdk/cmdline-tools
+   mv ~/Android/Sdk/cmdline-tools/cmdline-tools ~/Android/Sdk/cmdline-tools/latest
+   export ANDROID_HOME=~/Android/Sdk
+   yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+   $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+   ```
+
+3. **Codice sorgente**:
+
+   ```bash
+   git clone https://github.com/mikysal78/openwisp-android.git
+   cd openwisp-android
+   echo "sdk.dir=$HOME/Android/Sdk" > local.properties
+   ```
+
+4. **Test, lint e APK di debug** (firmato con la chiave di debug, va bene per
+   provare l'app):
+
+   ```bash
+   ./gradlew testDebugUnitTest lintDebug assembleDebug
+   # app/build/outputs/apk/debug/app-debug.apk
+   ```
+
+5. **APK di release**, firmato con una chiave tua. Crea la chiave una volta
+   sola e **tienine una copia**: gli aggiornamenti di un'app installata devono
+   essere firmati con la stessa chiave.
+
+   ```bash
+   keytool -genkeypair -keystore ~/openwisp-android.jks -storetype PKCS12 \
+     -alias openwisp-android -keyalg RSA -keysize 4096 -validity 10000
+   cat > keystore.properties <<EOT
+   storeFile=$HOME/openwisp-android.jks
+   storePassword=...
+   keyAlias=openwisp-android
+   keyPassword=...
+   EOT
+   chmod 600 keystore.properties
+   ./gradlew assembleRelease
+   # app/build/outputs/apk/release/app-release.apk
+   ```
+
+   `keystore.properties` è in `.gitignore`; in CI gli stessi valori possono
+   arrivare dalle variabili d'ambiente `OW_KEYSTORE`, `OW_KEYSTORE_PASSWORD`,
+   `OW_KEY_ALIAS` e `OW_KEY_PASSWORD`. Per Google Play si compila il bundle
+   con `./gradlew bundleRelease` (`app/build/outputs/bundle/release/`).
+
+6. **Installa** su un telefono con il debug USB attivo:
+
+   ```bash
+   $ANDROID_HOME/platform-tools/adb install -r app/build/outputs/apk/release/app-release.apk
+   ```
+
+   Un APK firmato con una chiave diversa non può sostituire quello
+   installato: prima disinstalla l'app.
 
 Il client delle API è in `app/src/main/java/.../data/Api.kt`, le schermate in
 `ui/`, il controllo delle notifiche in background in

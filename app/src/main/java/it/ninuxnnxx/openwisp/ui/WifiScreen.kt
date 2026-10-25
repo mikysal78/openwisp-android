@@ -1,13 +1,11 @@
 package it.ninuxnnxx.openwisp.ui
 
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -205,18 +203,38 @@ fun NetconsoleScreen(api: OpenWispApi, deviceId: String, onUnauthorized: () -> U
                                 style = MaterialTheme.typography.titleSmall,
                             )
                         }
-                        item {
-                            Text(
-                                log.lines.joinToString("\n"),
-                                Modifier.horizontalScroll(rememberScrollState()),
-                                style = MaterialTheme.typography.bodySmall,
-                                fontFamily = FontFamily.Monospace,
-                                softWrap = false,
-                            )
+                        // le piu' recenti in cima; righe a capo, niente scorrimento laterale
+                        items(log.lines.asReversed()) { line ->
+                            val (time, message) = splitLogLine(line)
+                            Column(Modifier.padding(vertical = 3.dp)) {
+                                if (time != null) {
+                                    Text(
+                                        time,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    )
+                                }
+                                Text(message, style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
+                            }
+                            HorizontalDivider()
                         }
                     }
                 }
             }
         }
     }
+}
+
+private val logTime = Regex("""^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?(?:Z|[+-]\d\d:\d\d))\s+(.*)$""")
+private val logTimeFormat = java.time.format.DateTimeFormatter.ofPattern("dd/MM HH:mm:ss")
+
+/** Riga di rsyslog "2026-10-23T04:25:29.02+02:00 messaggio" -> ora locale e messaggio. */
+internal fun splitLogLine(line: String): Pair<String?, String> {
+    val match = logTime.find(line) ?: return null to line
+    val time = runCatching {
+        java.time.OffsetDateTime.parse(match.groupValues[1])
+            .atZoneSameInstant(java.time.ZoneId.systemDefault())
+            .format(logTimeFormat)
+    }.getOrNull() ?: return null to line
+    return time to match.groupValues[2]
 }
