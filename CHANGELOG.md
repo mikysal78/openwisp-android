@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1
+
+- First release built and signed by GitHub Actions: APK, AAB for Google Play,
+  `SHA256SUMS` and build provenance attestation.
+- Library updates: androidx.fragment 1.9.1, androidx.work 2.12.0.
+- README: how to build the APK and publish a release; testers register at
+  app@ninux-nnxx.it.
+
 ## 0.1.0
 
 First release.
