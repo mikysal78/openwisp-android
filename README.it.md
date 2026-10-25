@@ -197,6 +197,27 @@ Studio non è necessario.
    Un APK firmato con una chiave diversa non può sostituire quello
    installato: prima disinstalla l'app.
 
+### Pubblicare una release
+
+Le release le compila GitHub Actions
+([`release.yml`](.github/workflows/release.yml)) al push di un tag `v*`:
+
+1. aumenta `versionCode` e imposta `versionName` in `app/build.gradle.kts`;
+2. aggiungi la sezione `## <versione>` a [CHANGELOG.md](CHANGELOG.md) (diventa
+   la nota della release);
+3. commit, poi `git tag -a v<versione> -m "openwisp-android <versione>"` e
+   `git push origin v<versione>`.
+
+Il workflow controlla che il tag corrisponda a `versionName`, esegue test e
+lint, firma APK e AAB con la chiave dell'environment `release` (secret
+`OW_KEYSTORE_BASE64`, `OW_KEYSTORE_PASSWORD`, `OW_KEY_ALIAS`,
+`OW_KEY_PASSWORD`, usabili solo dai tag `v*`), verifica il certificato di
+firma e pubblica i file con `SHA256SUMS` e un'attestazione di provenienza:
+
+```bash
+gh attestation verify openwisp-android-<versione>.apk -R mikysal78/openwisp-android
+```
+
 Il client delle API è in `app/src/main/java/.../data/Api.kt`, le schermate in
 `ui/`, il controllo delle notifiche in background in
 `work/NotificationWorker.kt`.
