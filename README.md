@@ -194,6 +194,27 @@ required.
    An APK signed with a different key cannot replace the installed one:
    uninstall the app first.
 
+### Publishing a release
+
+Releases are built by GitHub Actions
+([`release.yml`](.github/workflows/release.yml)) when a `v*` tag is pushed:
+
+1. raise `versionCode` and set `versionName` in `app/build.gradle.kts`;
+2. add the `## <version>` section to [CHANGELOG.md](CHANGELOG.md) (it becomes
+   the release notes);
+3. commit, then `git tag -a v<version> -m "openwisp-android <version>"` and
+   `git push origin v<version>`.
+
+The workflow checks that the tag matches `versionName`, runs tests and lint,
+signs APK and AAB with the key in the `release` environment (secrets
+`OW_KEYSTORE_BASE64`, `OW_KEYSTORE_PASSWORD`, `OW_KEY_ALIAS`,
+`OW_KEY_PASSWORD`, usable only by `v*` tags), checks the signing certificate,
+and publishes the files with `SHA256SUMS` and a build provenance attestation:
+
+```bash
+gh attestation verify openwisp-android-<version>.apk -R mikysal78/openwisp-android
+```
+
 The client of the API is in `app/src/main/java/.../data/Api.kt`, the screens
 in `ui/`, the background check of the notifications in
 `work/NotificationWorker.kt`.
