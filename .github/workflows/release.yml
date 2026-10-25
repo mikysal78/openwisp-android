@@ -69,12 +69,14 @@ jobs:
 
       - name: Check the signature and collect the files
         run: |
+          set -o pipefail
           apksigner=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
           mkdir dist
           cp app/build/outputs/apk/release/app-release.apk "dist/openwisp-android-$VERSION.apk"
           cp app/build/outputs/bundle/release/app-release.aab "dist/openwisp-android-$VERSION.aab"
           digest=$("$apksigner" verify --print-certs "dist/openwisp-android-$VERSION.apk" \
-            | sed -n 's/^Signer #1 certificate SHA-256 digest: //p')
+            | grep -m1 "certificate SHA-256 digest: " | sed 's/.*certificate SHA-256 digest: //')
+          # apksigner 36 scrive "Signer #1 certificate ...", il 37 "V2 Signer: certificate ..."
           [ "$digest" = "$SIGNING_CERT_SHA256" ] || {
             echo "::error::APK signed with an unexpected certificate: $digest"; exit 1; }
           cd dist && sha256sum * > SHA256SUMS && cat SHA256SUMS

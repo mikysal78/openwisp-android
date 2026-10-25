@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2
+
+- Release workflow: read the signing certificate with the output of both
+  apksigner 36 and 37. The 0.1.1 release stopped at that check and was not
+  published; this release contains everything listed for 0.1.1.
+
 ## 0.1.1
 
 - First release built and signed by GitHub Actions: APK, AAB for Google Play,
