@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Il token e' cifrato con una chiave del Keystore che non segue il backup:
+     tanto vale non copiare nulla. -->
+<full-backup-content>
+    <exclude domain="sharedpref" path="." />
+</full-backup-content>

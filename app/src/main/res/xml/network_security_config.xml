@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Solo HTTPS e solo le CA di sistema: niente CA installate dall'utente,
+     cosi' un proxy con un certificato aggiunto al telefono non legge il token. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

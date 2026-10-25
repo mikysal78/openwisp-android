@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="channel_notifications">Notifiche di OpenWISP</string>
+    <string name="retry">Riprova</string>
+    <string name="cancel">Annulla</string>
+    <string name="back">Indietro</string>
+    <string name="more">Mostra tutto</string>
+    <string name="less">Mostra meno</string>
+    <string name="device">Dispositivo</string>
+
+    <string name="error_unauthorized">La sessione non è più valida: accedi di nuovo.</string>
+    <string name="error_forbidden">Il tuo utente non ha il permesso per questa operazione.</string>
+    <string name="error_host">Server non trovato. Controlla l\'indirizzo e la connessione.</string>
+    <string name="error_tls">Connessione sicura non riuscita: %1$s</string>
+    <string name="error_network">Errore di rete: %1$s</string>
+    <string name="session_expired">La sessione è scaduta o il token è stato revocato.</string>
+
+    <string name="login_intro">Accedi con il tuo utente di OpenWISP. Sono accettati solo server HTTPS.</string>
+    <string name="login_server">Server</string>
+    <string name="login_username">Nome utente</string>
+    <string name="login_password">Password</string>
+    <string name="login_show_password">Mostra la password</string>
+    <string name="login_submit">Accedi</string>
+    <string name="login_bad_server">Indirizzo non valido: usa il nome del server, per esempio openwisp.example.com.</string>
+    <string name="login_note">La password serve solo a ottenere il token delle API e non viene salvata. L\'app può fare quello che il tuo utente può fare nell\'admin di OpenWISP.</string>
+
+    <string name="lock_title">Sblocca OpenWISP</string>
+    <string name="lock_unlock">Sblocca</string>
+
+    <string name="tab_devices">Dispositivi</string>
+    <string name="tab_wifi">Wi-Fi</string>
+    <string name="tab_notifications">Notifiche</string>
+    <string name="tab_settings">Impostazioni</string>
+
+    <string name="status_ok">Online</string>
+    <string name="status_problem">Problema</string>
+    <string name="status_critical">Critico</string>
+    <string name="status_deactivated">Disattivato</string>
+    <string name="status_unknown">Sconosciuto</string>
+    <string name="config_applied">Config applicata</string>
+    <string name="config_modified">Config in attesa</string>
+    <string name="config_error">Errore config</string>
+
+    <string name="devices_search">Cerca nome, IP, MAC, modello</string>
+    <string name="devices_all">Tutti %1$d</string>
+    <string name="devices_none">Nessun dispositivo.</string>
+
+    <string name="info_management_ip">IP di gestione</string>
+    <string name="info_last_ip">Ultimo IP</string>
+    <string name="info_mac">Indirizzo MAC</string>
+    <string name="info_model">Modello</string>
+    <string name="info_os">Firmware</string>
+    <string name="info_system">Sistema</string>
+    <string name="info_uptime">Acceso da</string>
+    <string name="info_load">Carico</string>
+    <string name="info_memory">Memoria</string>
+    <string name="info_disk">Disco %1$s</string>
+    <string name="info_notes">Note</string>
+    <string name="duration_days">%1$d g %2$d h</string>
+    <string name="duration_hours">%1$d h %2$d min</string>
+    <string name="duration_minutes">%1$d min</string>
+
+    <string name="actions">Azioni</string>
+    <string name="actions_no_ssh">Nessuna connessione SSH funzionante: comandi, riavvio e aggiornamenti sono disattivati.</string>
+    <string name="action_reboot">Riavvia</string>
+    <string name="action_command">Comando</string>
+    <string name="reboot_title">Riavviare %1$s?</string>
+    <string name="reboot_text">Il dispositivo resterà irraggiungibile per qualche minuto, e con lui i suoi client.</string>
+    <string name="command_title">Comando su %1$s</string>
+    <string name="command_hint">Comando di shell eseguito come root tramite la connessione SSH di OpenWISP.</string>
+    <string name="command_next">Avanti</string>
+    <string name="command_confirm_title">Eseguire su %1$s?</string>
+    <string name="command_run">Esegui</string>
+    <string name="command_sent">Comando inviato</string>
+    <string name="commands_recent">Ultimi comandi</string>
+    <string name="luci_missing">LuCI non è disponibile: sul server serve openwisp-luci 0.3 o successivo.</string>
+    <string name="netconsole_missing">Netconsole non è disponibile: sul server serve openwisp-netconsole 0.2 o successivo.</string>
+    <string name="netconsole_empty">Nessun log netconsole per questo dispositivo.</string>
+
+    <string name="firmware">Firmware</string>
+    <string name="firmware_check">Cerca aggiornamenti</string>
+    <string name="firmware_checking">Controllo delle build…</string>
+    <string name="firmware_unknown">L\'immagine installata non è nel firmware upgrader.</string>
+    <string name="firmware_installed">Build installata</string>
+    <string name="firmware_image">Immagine</string>
+    <string name="firmware_latest">È già l\'ultima build.</string>
+    <string name="firmware_install">Installa</string>
+    <string name="firmware_last_op">Ultimo aggiornamento</string>
+    <string name="firmware_confirm_title">Aggiornare %1$s?</string>
+    <string name="firmware_confirm_text">La build %1$s (%2$s) verrà installata con sysupgrade. Il dispositivo si riavvia e resta offline per qualche minuto.</string>
+    <string name="firmware_started">Aggiornamento avviato</string>
+
+    <string name="wifi_interfaces">Interfacce Wi-Fi</string>
+    <plurals name="wifi_clients">
+        <item quantity="one">%1$d client</item>
+        <item quantity="many">%1$d client</item>
+        <item quantity="other">%1$d client</item>
+    </plurals>
+    <string name="period_1d">1 giorno</string>
+    <string name="period_3d">3 giorni</string>
+    <string name="period_7d">7 giorni</string>
+    <string name="period_30d">30 giorni</string>
+
+    <string name="wifi_sessions_open">Collegati</string>
+    <string name="wifi_sessions_recent">Sessioni</string>
+    <string name="wifi_users">Utenti</string>
+    <string name="wifi_no_sessions">Nessuna sessione.</string>
+    <string name="users_search">Cerca utenti</string>
+    <string name="users_staff">staff</string>
+    <string name="users_superuser">superuser</string>
+    <string name="users_block">Blocca</string>
+    <string name="users_unblock">Sblocca</string>
+    <string name="users_block_title">Bloccare %1$s?</string>
+    <string name="users_unblock_title">Sbloccare %1$s?</string>
+    <string name="users_block_text">L\'utente non potrà più accedere al Wi-Fi. Una sessione già aperta resta attiva fino alla sua chiusura.</string>
+    <string name="users_unblock_text">L\'utente potrà di nuovo accedere al Wi-Fi.</string>
+
+    <string name="notifications_none">Nessuna notifica.</string>
+    <string name="notifications_read_all">Segna tutte come lette</string>
+
+    <string name="settings_account">Account</string>
+    <string name="settings_lock">Blocco dell\'app</string>
+    <string name="settings_lock_text">Chiede l\'impronta o il blocco schermo all\'apertura dell\'app.</string>
+    <string name="settings_lock_unavailable">Imposta un blocco schermo sul telefono per usarlo.</string>
+    <string name="settings_notifications">Notifiche</string>
+    <string name="settings_notifications_text">Controlla OpenWISP ogni 15 minuti e mostra le notifiche nuove.</string>
+    <string name="settings_logout">Esci</string>
+    <string name="settings_logout_note">Il token viene tolto dal telefono ma resta valido sul server, perché OpenWISP dà un solo token per utente e altri strumenti potrebbero usarlo.</string>
+    <string name="settings_logout_confirm">Togliere la sessione da questo telefono?</string>
+</resources>
