@@ -88,6 +88,7 @@ dependencies {
     implementation(libs.biometric)
     implementation(libs.browser)
     implementation(libs.core.ktx)
+    implementation(libs.fragment)
     implementation(libs.okhttp)
     implementation(libs.serialization.json)
 

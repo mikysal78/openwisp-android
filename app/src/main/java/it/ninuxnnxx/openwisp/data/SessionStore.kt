@@ -30,14 +30,15 @@ class SessionStore(context: Context) {
         return Session(server, username, token)
     }
 
-    fun save(session: Session) = prefs.edit {
+    // commit: la sessione deve essere su disco prima che l'app vada avanti
+    fun save(session: Session) = prefs.edit(commit = true) {
         putString(KEY_SERVER, session.server.toString())
         putString(KEY_USER, session.username)
         putString(KEY_TOKEN, encrypt(session.token))
     }
 
     /** Dimentica il token sul telefono; sul server resta valido (vedi README). */
-    fun clear() = prefs.edit {
+    fun clear() = prefs.edit(commit = true) {
         remove(KEY_TOKEN)
         remove(KEY_LAST_NOTIFICATION)
     }

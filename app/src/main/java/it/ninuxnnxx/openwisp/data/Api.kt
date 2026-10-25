@@ -245,12 +245,16 @@ class OpenWispApi(
         call(url("users/user/$id"), "PATCH", buildJsonObject { put("is_active", active) }),
     )
 
-    suspend fun sessions(open: Boolean): Page<RadiusSession> = get(
-        Page.serializer(RadiusSession.serializer()),
-        "radius/sessions",
-        "page_size" to "100",
-        "is_open" to if (open) "true" else null,
-    )
+    /**
+     * Sessioni RADIUS, le piu' recenti per prime. Questa API risponde con una
+     * lista semplice (paginazione nell'header Link), non con {"results": ...}.
+     */
+    suspend fun sessions(open: Boolean): List<RadiusSession> {
+        val text = call(url("radius/sessions", "page_size" to "100", "is_open" to if (open) "true" else null))
+        val element = json.parseToJsonElement(text)
+        val list = if (element is JsonObject) element["results"] ?: return emptyList() else element
+        return json.decodeFromJsonElement(ListSerializer(RadiusSession.serializer()), list)
+    }
 
     // --- moduli facoltativi (openwisp-luci, openwisp-netconsole) ---
 

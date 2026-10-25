@@ -65,7 +65,7 @@ private fun Sessions(api: OpenWispApi, open: Boolean, onUnauthorized: () -> Unit
     // il NAS e' l'IP di gestione del router: dai device si ricava il nome
     val loader = rememberLoader(api, open) {
         val devices = runCatching { api.devices() }.getOrDefault(emptyList())
-        api.sessions(open).results to devices
+        api.sessions(open) to devices
     }
     LoadContent(loader, onUnauthorized) { (sessions, devices) ->
         val byIp = devices.filter { it.managementIp != null }.associateBy { it.managementIp!! }

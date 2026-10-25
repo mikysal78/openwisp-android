@@ -167,6 +167,17 @@ class ApiTest {
     }
 
     @Test
+    fun sessionsAcceptPlainListAndPage() = runBlocking {
+        json("""[]""")
+        assertEquals(0, api.sessions(open = true).size)
+        assertEquals("/api/v1/radius/sessions/?page_size=100&is_open=true", server.takeRequest().target)
+        json("""[{"unique_id":"u1","username":"a"}]""")
+        assertEquals("a", api.sessions(open = false).single().username)
+        json("""{"count":1,"results":[{"unique_id":"u2"}]}""")
+        assertEquals("u2", api.sessions(open = false).single().uniqueId)
+    }
+
+    @Test
     fun helpers() {
         assertTrue(isUuid("9c0bbdf5-fb7f-49a0-bbed-837a0bd3e2b6"))
         assertFalse(isUuid("../9c0bbdf5"))
