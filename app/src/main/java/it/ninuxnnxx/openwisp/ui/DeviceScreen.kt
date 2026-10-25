@@ -54,6 +54,7 @@ import it.ninuxnnxx.openwisp.R
 import it.ninuxnnxx.openwisp.data.Build
 import it.ninuxnnxx.openwisp.data.Command
 import it.ninuxnnxx.openwisp.data.DeviceDetail
+import it.ninuxnnxx.openwisp.data.Features
 import it.ninuxnnxx.openwisp.data.FirmwareImage
 import it.ninuxnnxx.openwisp.data.FirmwareStatus
 import it.ninuxnnxx.openwisp.data.OpenWispApi
@@ -67,12 +68,15 @@ private val periods = listOf("1d", "3d", "7d", "30d")
 fun DeviceScreen(
     api: OpenWispApi,
     deviceId: String,
+    features: Features,
     onUnauthorized: () -> Unit,
     onNetconsole: () -> Unit,
     snack: (String) -> Unit,
 ) {
     var period by rememberSaveable { mutableStateOf("1d") }
-    val loader = rememberLoader(api, deviceId, period) { api.device(deviceId, period) }
+    val loader = rememberLoader(api, deviceId, period, features.monitoring) {
+        api.device(deviceId, period, features.monitoring)
+    }
     val connections = rememberLoader(api, deviceId) { api.connections(deviceId) }
     val commands = rememberLoader(api, deviceId) { api.commands(deviceId).results }
 
@@ -83,12 +87,12 @@ fun DeviceScreen(
                 item { Header(device) }
                 item { InfoCard(device) }
                 item {
-                    Actions(api, device, sshOk, connections.state, snack, onNetconsole) { commands.reload() }
+                    Actions(api, device, features, sshOk, connections.state, snack, onNetconsole) { commands.reload() }
                 }
-                item { FirmwareCard(api, device, sshOk, snack) }
+                if (features.firmware) item { FirmwareCard(api, device, sshOk, snack) }
                 item { CommandsCard(commands) }
                 item { WifiCard(device) }
-                item {
+                if (features.monitoring) item {
                     Row(
                         Modifier.horizontalScroll(rememberScrollState()).padding(top = 12.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -167,6 +171,7 @@ private fun InfoCard(device: DeviceDetail) {
 private fun Actions(
     api: OpenWispApi,
     device: DeviceDetail,
+    features: Features,
     sshOk: Boolean,
     connections: Load<*>,
     snack: (String) -> Unit,
@@ -205,22 +210,19 @@ private fun Actions(
             )
         }
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            AssistChip(
+            // i moduli che il server non ha non compaiono proprio
+            if (features.luci) AssistChip(
                 onClick = {
                     run {
                         val url = api.luciLink(device.id)
-                        if (url == null) {
-                            snack(resources.getString(R.string.luci_missing))
-                        } else {
-                            CustomTabsIntent.Builder().build().launchUrl(context, url.toUri())
-                        }
+                        CustomTabsIntent.Builder().build().launchUrl(context, url.toUri())
                     }
                 },
                 enabled = !busy && device.managementIp != null,
                 label = { Text("LuCI") },
                 leadingIcon = { Icon(Icons.AutoMirrored.Filled.OpenInNew, null, Modifier.size(18.dp)) },
             )
-            AssistChip(
+            if (features.netconsole) AssistChip(
                 onClick = onNetconsole,
                 label = { Text("Netconsole") },
                 leadingIcon = { Icon(Icons.AutoMirrored.Filled.Article, null, Modifier.size(18.dp)) },

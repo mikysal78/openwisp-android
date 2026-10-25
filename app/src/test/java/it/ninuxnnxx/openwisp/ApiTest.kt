@@ -130,9 +130,36 @@ class ApiTest {
     }
 
     @Test
-    fun optionalModulesReturnNullOn404() = runBlocking {
-        json("""{"detail":"Not found."}""", 404)
-        assertNull(api.luciLink("9c0bbdf5-fb7f-49a0-bbed-837a0bd3e2b6"))
+    fun featuresFollowOptionsAnswers() = runBlocking {
+        server.dispatcher = object : mockwebserver3.Dispatcher() {
+            override fun dispatch(request: mockwebserver3.RecordedRequest): MockResponse {
+                assertEquals("OPTIONS", request.method)
+                val path = request.url.encodedPath
+                val code = when {
+                    path.startsWith("/api/v1/monitoring/") -> 200
+                    path.startsWith("/api/v1/luci/") -> 405
+                    else -> 404
+                }
+                return MockResponse.Builder().code(code).build()
+            }
+        }
+        val f = api.features()
+        assertTrue(f.monitoring && f.luci)
+        assertFalse(f.firmware || f.radius || f.netconsole)
+    }
+
+    @Test
+    fun withoutMonitoringUsesController() = runBlocking {
+        json("""{"count":0,"next":null,"results":[]}""")
+        api.devices(monitoring = false)
+        assertEquals("/api/v1/controller/device/?page_size=100", server.takeRequest().target)
+        json("""{"id":"x","name":"r"}""")
+        api.device("9c0bbdf5-fb7f-49a0-bbed-837a0bd3e2b6", "1d", monitoring = false)
+        assertEquals("/api/v1/controller/device/9c0bbdf5-fb7f-49a0-bbed-837a0bd3e2b6/", server.takeRequest().target)
+    }
+
+    @Test
+    fun luciLink() = runBlocking {
         json("""{"url":"https://x.luci.example.com/__openwisp_luci__/login/?token=t"}""")
         assertEquals(
             "https://x.luci.example.com/__openwisp_luci__/login/?token=t",

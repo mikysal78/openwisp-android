@@ -36,6 +36,23 @@ private fun parseColor(hex: String?): Color? = runCatching {
     Color(0xFF000000 or clean.toLong(16))
 }.getOrNull()
 
+/**
+ * Unita' "adaptive_prefix+B" (o "+bps") di openwisp-monitoring: i valori
+ * arrivano in G<unita'> e il prefisso si sceglie dal valore, come in chart.js
+ * di OpenWISP (getAdaptiveScale). Restituisce moltiplicatore ed etichetta.
+ */
+internal fun adaptiveScale(value: Double, unit: String): Pair<Double, String> {
+    if (!unit.contains("adaptive_prefix")) return 1.0 to unit
+    val base = unit.substringAfter("+", "")
+    return when {
+        value == 0.0 -> 1.0 to base
+        value < 0.001 -> 1_000_000.0 to "K$base"
+        value < 1 -> 1000.0 to "M$base"
+        value < 1000 -> 1.0 to "G$base"
+        else -> 0.001 to "T$base"
+    }
+}
+
 private fun format(value: Double?): String = when {
     value == null -> "-"
     value >= 100 || value == Math.floor(value) -> "%.0f".format(value)
@@ -52,9 +69,16 @@ fun ChartCard(chart: Chart, x: List<String>) {
     val series = chart.series()
     if (series.isEmpty() || series.all { (_, v) -> v.all { it == null } }) return
     val colors = series.indices.map { parseColor(chart.colors?.getOrNull(it)) ?: palette[it % palette.size] }
-    val unit = chart.unit?.trim().orEmpty()
     val all = series.flatMap { it.second }.filterNotNull()
-    val max = (all.maxOrNull() ?: 0.0).let { if (it <= 0.0) 1.0 else it }
+    val rawMax = all.maxOrNull() ?: 0.0
+    val rawUnit = chart.unit?.trim().orEmpty()
+    // ogni valore con il suo prefisso: il riassunto e' il totale del periodo
+    fun withUnit(value: Double?): String {
+        if (value == null) return "-"
+        val (multiplier, unit) = adaptiveScale(value, rawUnit)
+        return "${format(value * multiplier)} $unit".trim()
+    }
+    val max = if (rawMax <= 0.0) 1.0 else rawMax
     val min = minOf(0.0, all.minOrNull() ?: 0.0)
     val bars = chart.type == "bar" && series.size == 1
     val summary = chart.summaryValues()
@@ -64,7 +88,7 @@ fun ChartCard(chart: Chart, x: List<String>) {
         Column(Modifier.padding(12.dp)) {
             Text(chart.title, style = MaterialTheme.typography.titleSmall)
             Text(
-                "max ${format(max)} $unit",
+                "max ${withUnit(rawMax)}",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -112,7 +136,7 @@ fun ChartCard(chart: Chart, x: List<String>) {
                         Surface(Modifier.size(8.dp), shape = CircleShape, color = colors[index]) {}
                         val value = summary[name] ?: values.lastOrNull { it != null }
                         Text(
-                            "${name.replace('_', ' ')}: ${format(value)} $unit",
+                            "${name.replace('_', ' ')}: ${withUnit(value)}",
                             Modifier.padding(start = 4.dp),
                             style = MaterialTheme.typography.labelSmall,
                         )

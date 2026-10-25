@@ -33,14 +33,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import it.ninuxnnxx.openwisp.R
 import it.ninuxnnxx.openwisp.data.Device
+import it.ninuxnnxx.openwisp.data.Features
 import it.ninuxnnxx.openwisp.data.OpenWispApi
 
 private val statusOrder = listOf("critical", "problem", "unknown", "ok", "deactivated")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DevicesScreen(api: OpenWispApi, onUnauthorized: () -> Unit, onOpen: (Device) -> Unit) {
-    val loader = rememberLoader(api) { api.devices() }
+fun DevicesScreen(api: OpenWispApi, features: Features, onUnauthorized: () -> Unit, onOpen: (Device) -> Unit) {
+    val loader = rememberLoader(api, features.monitoring) { api.devices(features.monitoring) }
     var query by rememberSaveable { mutableStateOf("") }
     var filter by rememberSaveable { mutableStateOf<String?>(null) }
 
@@ -66,7 +67,8 @@ fun DevicesScreen(api: OpenWispApi, onUnauthorized: () -> Unit, onOpen: (Device)
                             placeholder = { Text(stringResource(R.string.devices_search)) },
                             singleLine = true,
                         )
-                        Row(
+                        // senza openwisp-monitoring non c'e' uno stato da filtrare
+                        if (features.monitoring) Row(
                             Modifier.horizontalScroll(rememberScrollState()).padding(top = 8.dp),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {

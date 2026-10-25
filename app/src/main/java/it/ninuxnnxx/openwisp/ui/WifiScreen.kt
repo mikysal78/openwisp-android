@@ -64,7 +64,7 @@ fun WifiScreen(api: OpenWispApi, onUnauthorized: () -> Unit, snack: (String) -> 
 private fun Sessions(api: OpenWispApi, open: Boolean, onUnauthorized: () -> Unit) {
     // il NAS e' l'IP di gestione del router: dai device si ricava il nome
     val loader = rememberLoader(api, open) {
-        val devices = runCatching { api.devices() }.getOrDefault(emptyList())
+        val devices = runCatching { api.devices(monitoring = false) }.getOrDefault(emptyList())
         api.sessions(open) to devices
     }
     LoadContent(loader, onUnauthorized) { (sessions, devices) ->
@@ -194,9 +194,6 @@ fun NetconsoleScreen(api: OpenWispApi, deviceId: String, onUnauthorized: () -> U
         PullToRefreshBox(loader.refreshing, loader.reload, Modifier.fillMaxSize()) {
             LazyColumn(Modifier.fillMaxSize().padding(horizontal = 12.dp)) {
                 when {
-                    logs == null -> item {
-                        Text(stringResource(R.string.netconsole_missing), Modifier.padding(vertical = 24.dp))
-                    }
                     logs.all { it.lines.isEmpty() } -> item {
                         Text(stringResource(R.string.netconsole_empty), Modifier.padding(vertical = 24.dp))
                     }

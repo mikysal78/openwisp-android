@@ -30,6 +30,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -45,6 +46,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import it.ninuxnnxx.openwisp.R
+import it.ninuxnnxx.openwisp.data.Features
 import it.ninuxnnxx.openwisp.data.OpenWispApi
 import it.ninuxnnxx.openwisp.data.Session
 import it.ninuxnnxx.openwisp.data.SessionStore
@@ -88,6 +90,10 @@ fun OpenWispApp(
     onLogout: (expired: Boolean) -> Unit,
 ) {
     val api = remember(session) { OpenWispApi(session.server, session.token) }
+    // senza risposta (rete assente) si mostra tutto: le singole schermate diranno l'errore
+    val features by produceState(Features.ALL, api) {
+        value = runCatching { api.features() }.getOrDefault(Features.ALL)
+    }
     val nav = rememberNavController()
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -129,7 +135,7 @@ fun OpenWispApp(
         },
         bottomBar = {
             NavigationBar {
-                tabs.forEach { tab ->
+                tabs.filter { it.route != "wifi" || features.radius }.forEach { tab ->
                     NavigationBarItem(
                         selected = route == tab.route,
                         onClick = {
@@ -149,7 +155,7 @@ fun OpenWispApp(
     ) { padding ->
         NavHost(nav, startDestination = "devices", modifier = Modifier.padding(padding)) {
             composable("devices") {
-                DevicesScreen(api, unauthorized) { nav.navigate("device/${it.id}") }
+                DevicesScreen(api, features, unauthorized) { nav.navigate("device/${it.id}") }
             }
             composable("wifi") { WifiScreen(api, unauthorized, snack) }
             composable("notifications") {
@@ -160,7 +166,7 @@ fun OpenWispApp(
             }
             composable("device/{id}", listOf(navArgument("id") { type = NavType.StringType })) { e ->
                 val id = e.arguments?.getString("id").orEmpty()
-                DeviceScreen(api, id, unauthorized, { nav.navigate("netconsole/$id") }, snack)
+                DeviceScreen(api, id, features, unauthorized, { nav.navigate("netconsole/$id") }, snack)
             }
             composable("netconsole/{id}", listOf(navArgument("id") { type = NavType.StringType })) { e ->
                 NetconsoleScreen(api, e.arguments?.getString("id").orEmpty(), unauthorized)

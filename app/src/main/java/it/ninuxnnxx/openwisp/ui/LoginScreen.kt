@@ -1,5 +1,6 @@
 package it.ninuxnnxx.openwisp.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentType
 import androidx.compose.ui.semantics.semantics
@@ -86,6 +88,7 @@ fun LoginScreen(lastServer: String?, lastUsername: String?, onLoggedIn: (Session
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Image(painterResource(R.drawable.ic_launcher_foreground), null, Modifier.size(160.dp))
         Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineMedium)
         Text(
             stringResource(R.string.login_intro),

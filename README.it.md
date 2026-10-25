@@ -10,6 +10,23 @@ sui router, utenti e sessioni Wi-Fi, notifiche in background.
 Basilicata. Funziona con qualsiasi server OpenWISP; non è un progetto
 ufficiale di OpenWISP.
 
+## 🧪 Diventa tester
+
+L'app è giovane e ci piacerebbe provarla sul maggior numero possibile di
+server OpenWISP e di telefoni. Arriverà anche su **Google Play**, e Google
+chiede un test chiuso con dei tester registrati prima della pubblicazione.
+
+- **Provala**: installa l'APK dalle
+  [release](https://github.com/mikysal78/openwisp-android/releases) e usala con
+  il tuo OpenWISP.
+- **Registrati come tester** per la versione Google Play: scrivi a
+  [admin@ninux-nnxx.it](mailto:admin@ninux-nnxx.it?subject=openwisp-android%20tester)
+  indicando l'account Google che usi sul telefono. Il link al gruppo dei
+  tester comparirà qui appena sarà aperto.
+- **Segnala** problemi e idee nelle
+  [issue](https://github.com/mikysal78/openwisp-android/issues) (i problemi di
+  sicurezza in privato, vedi [SECURITY.md](SECURITY.md)).
+
 ## Funzioni
 
 - **Dispositivi**: elenco con lo stato del monitoring (online, problema,
@@ -39,11 +56,15 @@ ufficiale di OpenWISP.
 - Un server OpenWISP in **HTTPS** con un certificato di una CA pubblica e un
   utente con accesso all'admin (staff). L'app può fare esattamente quello che
   questo utente può fare nell'admin di OpenWISP.
+- L'app controlla quali moduli ha il server e mostra solo quello che c'è:
+  senza openwisp-monitoring i dispositivi non hanno stato e grafici, senza
+  openwisp-firmware-upgrader manca la sezione firmware, senza openwisp-radius
+  manca la scheda Wi-Fi.
 - Facoltativi, per i pulsanti LuCI e Netconsole:
   [openwisp-luci](https://github.com/mikysal78/openwisp-luci) 0.3.0 o
   successivo e [openwisp-netconsole](https://github.com/mikysal78/openwisp-netconsole)
   0.2.0 o successivo, con i loro `api_urls` inclusi sotto `api/v1/`. Senza, i
-  pulsanti dicono che la funzione non è disponibile.
+  pulsanti non compaiono.
 
 ## Installazione
 
@@ -117,4 +138,7 @@ Il client delle API è in `app/src/main/java/.../data/Api.kt`, le schermate in
 
 ## Licenza
 
-GPL-3.0-or-later, vedi [LICENSE](LICENSE).
+GPL-3.0-or-later, vedi [LICENSE](LICENSE). Il logo di OpenWISP usato come
+icona dell'app viene da [openwisp-utils](https://github.com/openwisp/openwisp-utils)
+(BSD-3-Clause); OpenWISP è un progetto della sua comunità, e questa app non ne
+fa parte.

@@ -73,8 +73,6 @@
     <string name="command_run">Esegui</string>
     <string name="command_sent">Comando inviato</string>
     <string name="commands_recent">Ultimi comandi</string>
-    <string name="luci_missing">LuCI non è disponibile: sul server serve openwisp-luci 0.3 o successivo.</string>
-    <string name="netconsole_missing">Netconsole non è disponibile: sul server serve openwisp-netconsole 0.2 o successivo.</string>
     <string name="netconsole_empty">Nessun log netconsole per questo dispositivo.</string>
 
     <string name="firmware">Firmware</string>

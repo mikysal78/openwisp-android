@@ -157,10 +157,37 @@ class OpenWispApi(
 
     // --- dispositivi ---
 
-    suspend fun devices(): List<Device> = all(Device.serializer(), "monitoring/device")
+    /**
+     * Quali moduli ha il server: OPTIONS sugli endpoint, 404 = non installato
+     * (le viste di luci e netconsole rispondono 405 a OPTIONS, che va bene).
+     */
+    suspend fun features(): Features = coroutineScope {
+        val nil = "00000000-0000-0000-0000-000000000000"
+        val monitoring = async { exists("monitoring/device") }
+        val firmware = async { exists("firmware-upgrader/build") }
+        val radius = async { exists("radius/sessions") }
+        val luci = async { exists("luci/device/$nil/link") }
+        val netconsole = async { exists("netconsole/device/$nil/logs") }
+        Features(monitoring.await(), firmware.await(), radius.await(), luci.await(), netconsole.await())
+    }
 
-    suspend fun device(id: String, time: String): DeviceDetail =
-        get(DeviceDetail.serializer(), "monitoring/device/$id", "status" to "true", "time" to time)
+    private suspend fun exists(path: String): Boolean = try {
+        call(url(path), "OPTIONS")
+        true
+    } catch (e: ApiException) {
+        e.code != 404
+    }
+
+    /** Senza openwisp-monitoring si usa la lista di openwisp-controller (niente stato). */
+    suspend fun devices(monitoring: Boolean = true): List<Device> =
+        all(Device.serializer(), if (monitoring) "monitoring/device" else "controller/device")
+
+    suspend fun device(id: String, time: String, monitoring: Boolean = true): DeviceDetail =
+        if (monitoring) {
+            get(DeviceDetail.serializer(), "monitoring/device/$id", "status" to "true", "time" to time)
+        } else {
+            get(DeviceDetail.serializer(), "controller/device/$id")
+        }
 
     suspend fun connections(id: String): List<DeviceConnection> =
         all(DeviceConnection.serializer(), "controller/device/$id/connection")
@@ -258,23 +285,17 @@ class OpenWispApi(
 
     // --- moduli facoltativi (openwisp-luci, openwisp-netconsole) ---
 
-    /** Link monouso per LuCI; null se il server non ha openwisp-luci con l'API. */
-    suspend fun luciLink(deviceId: String): String? = try {
+    /** Link monouso per LuCI (openwisp-luci 0.3+; vedi features()). */
+    suspend fun luciLink(deviceId: String): String {
         val text = call(url("luci/device/$deviceId/link"), "POST")
-        json.decodeFromString(LinkResponse.serializer(), text).url
-    } catch (e: ApiException) {
-        if (e.code == 404) null else throw e
+        return json.decodeFromString(LinkResponse.serializer(), text).url
     }
 
-    /** Ultime righe dei log netconsole; null se il server non ha l'API. */
-    suspend fun netconsole(deviceId: String): List<NetconsoleLog>? = try {
-        json.decodeFromString(
-            ListSerializer(NetconsoleLog.serializer()),
-            call(url("netconsole/device/$deviceId/logs")),
-        )
-    } catch (e: ApiException) {
-        if (e.code == 404) null else throw e
-    }
+    /** Ultime righe dei log netconsole (openwisp-netconsole 0.2+; vedi features()). */
+    suspend fun netconsole(deviceId: String): List<NetconsoleLog> = json.decodeFromString(
+        ListSerializer(NetconsoleLog.serializer()),
+        call(url("netconsole/device/$deviceId/logs")),
+    )
 }
 
 /** Le tracce di un grafico: nome e valori (null dove manca il dato). */

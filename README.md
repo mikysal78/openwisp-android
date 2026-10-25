@@ -10,6 +10,23 @@ It is a small, independent app born for the OpenWISP instance of NINUX
 Basilicata. It works with any OpenWISP server; it is not an official OpenWISP
 project.
 
+## 🧪 Become a tester
+
+The app is young and we would like it to be tested on as many OpenWISP
+servers and phones as possible. It is coming to **Google Play** too, and
+Google asks for a closed test with registered testers before publishing it.
+
+- **Try it**: install the APK from the
+  [releases](https://github.com/mikysal78/openwisp-android/releases) and use
+  it with your OpenWISP.
+- **Register as a tester** for the Google Play version: write to
+  [admin@ninux-nnxx.it](mailto:admin@ninux-nnxx.it?subject=openwisp-android%20tester)
+  with the Google account you use on the phone. The link to the testers group
+  will appear here as soon as it is open.
+- **Report** problems and ideas in the
+  [issues](https://github.com/mikysal78/openwisp-android/issues) (security
+  issues privately, see [SECURITY.md](SECURITY.md)).
+
 ## Features
 
 - **Devices**: list with monitoring status (online, problem, critical), search
@@ -37,11 +54,15 @@ project.
 - An OpenWISP server on **HTTPS** with a certificate from a public CA, and a
   user with access to the admin (staff). The app can do exactly what this
   user can do in the OpenWISP admin.
+- The app checks which modules the server has and shows only what is there:
+  without openwisp-monitoring the devices have no status and charts, without
+  openwisp-firmware-upgrader there is no firmware section, without
+  openwisp-radius there is no Wi-Fi tab.
 - Optional, for the LuCI and Netconsole buttons:
   [openwisp-luci](https://github.com/mikysal78/openwisp-luci) 0.3.0 or later
   and [openwisp-netconsole](https://github.com/mikysal78/openwisp-netconsole)
   0.2.0 or later, with their `api_urls` included under `api/v1/`. Without them
-  the buttons say that the feature is not available.
+  the buttons are not shown.
 
 ## Installation
 
@@ -115,4 +136,7 @@ in `ui/`, the background check of the notifications in
 
 ## License
 
-GPL-3.0-or-later, see [LICENSE](LICENSE).
+GPL-3.0-or-later, see [LICENSE](LICENSE). The OpenWISP logo used as the app
+icon comes from [openwisp-utils](https://github.com/openwisp/openwisp-utils)
+(BSD-3-Clause); OpenWISP is a project of its community, and this app is not
+affiliated with it.

@@ -236,6 +236,23 @@ data class FirmwareStatus(
 @Serializable
 data class LinkResponse(val url: String)
 
+/**
+ * Moduli presenti sul server: un'installazione OpenWISP puo' non avere
+ * monitoring, firmware-upgrader o radius, e quasi mai openwisp-luci e
+ * openwisp-netconsole. L'app nasconde quello che manca.
+ */
+data class Features(
+    val monitoring: Boolean = true,
+    val firmware: Boolean = true,
+    val radius: Boolean = true,
+    val luci: Boolean = true,
+    val netconsole: Boolean = true,
+) {
+    companion object {
+        val ALL = Features()
+    }
+}
+
 @Serializable
 data class NetconsoleLog(
     val key: String = "",
