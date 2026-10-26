@@ -25,10 +25,17 @@ chiede un test chiuso con dei tester registrati prima della pubblicazione.
 - **Provala**: installa l'APK dalle
   [release](https://github.com/mikysal78/openwisp-android/releases) e usala con
   il tuo OpenWISP.
-- **Registrati come tester** per la versione Google Play: scrivi a
-  [app@ninux-nnxx.it](mailto:app@ninux-nnxx.it?subject=openwisp-android%20tester)
-  indicando l'account Google che usi sul telefono. Il link al gruppo dei
-  tester comparirà qui appena sarà aperto.
+- **Registrati come tester** per la versione Google Play, in due passi:
+  1. iscriviti al gruppo Google
+     [openwisp-android-testers](https://groups.google.com/g/openwisp-android-testers)
+     con l'account Google che usi sul telefono;
+  2. accetta l'invito al test da
+     [play.google.com/apps/testing/it.ninuxnnxx.openwisp](https://play.google.com/apps/testing/it.ninuxnnxx.openwisp)
+     (funziona appena Google approva la prima release di test), poi installa
+     l'app da Google Play.
+
+  Tienila installata per almeno 14 giorni: Google lo richiede prima di
+  pubblicare l'app per tutti.
 - **Segnala** problemi e idee nelle
   [issue](https://github.com/mikysal78/openwisp-android/issues) (i problemi di
   sicurezza in privato, vedi [SECURITY.md](SECURITY.md)).
