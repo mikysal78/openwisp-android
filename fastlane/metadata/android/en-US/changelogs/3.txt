@@ -1,0 +1,1 @@
+First Google Play release: devices, charts, actions with confirmation (reboot, commands, firmware, LuCI, netconsole), Wi-Fi users and sessions, notifications, fingerprint lock.

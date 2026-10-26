@@ -1,0 +1,32 @@
+Gestisci un server OpenWISP dal telefono, tramite le sue API REST. L'app è nata per la rete comunitaria NINUX Basilicata e funziona con qualsiasi server OpenWISP.
+
+DISPOSITIVI
+• Elenco dei router con lo stato del monitoring (online, problema, critico), ricerca per nome, IP, MAC o modello, filtri per stato: prima quelli con problemi.
+• Pagina del router: IP, modello, firmware, tempo di accensione, carico, memoria, disco, stato della configurazione, interfacce Wi-Fi con i client.
+• Grafici del monitoring su 1, 3, 7 o 30 giorni: ping, latenza, pacchetti persi, client Wi-Fi, traffico, CPU, memoria, disco.
+
+AZIONI, SEMPRE CON CONFERMA
+• Riavvio del router.
+• Comandi di shell, con l'esito quando il comando finisce.
+• Aggiornamento del firmware con il firmware upgrader di OpenWISP.
+• LuCI, l'interfaccia web del router, aperta nel browser (con il modulo openwisp-luci).
+• Log del kernel in tempo reale con netconsole (con il modulo openwisp-netconsole).
+
+WI-FI E HOTSPOT (openwisp-radius)
+• Utenti collegati e sessioni recenti, con router, IP, durata e traffico.
+• Blocco e sblocco degli utenti dell'hotspot.
+
+NOTIFICHE
+• Le notifiche di OpenWISP sul telefono, controllate ogni 15 minuti direttamente sul tuo server, senza servizi push esterni.
+
+SICUREZZA E PRIVACY
+• Il token delle API è cifrato con una chiave del Keystore di Android; la password non viene mai salvata.
+• Solo connessioni HTTPS, solo verso il server che inserisci tu.
+• Blocco dell'app con impronta o blocco schermo.
+• Nessuna pubblicità, nessuna statistica, nessun dato raccolto da noi.
+
+L'app mostra solo le funzioni che il tuo server ha: se mancano monitoring, firmware upgrader, RADIUS o i moduli per LuCI e netconsole, le parti relative non compaiono.
+
+Serve un utente con accesso all'admin di OpenWISP: l'app può fare esattamente quello che il tuo utente può fare nell'admin.
+
+App indipendente e open source (GPL-3.0), non è un prodotto ufficiale del progetto OpenWISP. Codice e documentazione: https://github.com/mikysal78/openwisp-android
