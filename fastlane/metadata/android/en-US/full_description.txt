@@ -1,0 +1,32 @@
+Manage an OpenWISP server from your phone, through its REST API. The app was born for the NINUX Basilicata community network and works with any OpenWISP server.
+
+DEVICES
+• List of routers with monitoring status (online, problem, critical), search by name, IP, MAC or model, filters by status: problems first.
+• Router page: IP, model, firmware, uptime, load, memory, disk, configuration status, Wi-Fi interfaces with their clients.
+• Monitoring charts over 1, 3, 7 or 30 days: ping, latency, packet loss, Wi-Fi clients, traffic, CPU, memory, disk.
+
+ACTIONS, ALWAYS WITH CONFIRMATION
+• Reboot the router.
+• Shell commands, with the output when the command ends.
+• Firmware upgrade with the OpenWISP firmware upgrader.
+• LuCI, the router web interface, opened in the browser (with the openwisp-luci module).
+• Real-time kernel logs with netconsole (with the openwisp-netconsole module).
+
+WI-FI AND HOTSPOT (openwisp-radius)
+• Users online and recent sessions, with router, IP, duration and traffic.
+• Block and unblock hotspot users.
+
+NOTIFICATIONS
+• OpenWISP notifications on your phone, checked every 15 minutes directly on your server, without external push services.
+
+SECURITY AND PRIVACY
+• The API token is encrypted with an Android Keystore key; the password is never stored.
+• HTTPS only, and only to the server you enter.
+• App lock with fingerprint or screen lock.
+• No ads, no analytics, no data collected by us.
+
+The app shows only what your server has: if monitoring, firmware upgrader, RADIUS or the LuCI and netconsole modules are missing, the related parts do not appear.
+
+You need a user with access to the OpenWISP admin: the app can do exactly what your user can do in the admin.
+
+Independent open source app (GPL-3.0), not an official product of the OpenWISP project. Code and documentation: https://github.com/mikysal78/openwisp-android
