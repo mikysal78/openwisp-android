@@ -2,7 +2,7 @@
 
 [🇬🇧 English](README.md) · 🇮🇹 Italiano
 
-> 📖 Questo repository fa parte dell'infrastruttura di **NINUX Basilicata**: la guida per ricostruirla tutta, passo passo (Proxmox, DNS, OpenWISP, moduli, firmware, app), è su **[la guida su GitHub Pages](https://mikysal78.github.io/ninux-basilicata-infra/)**.
+> 📖 Questo repository fa parte dell'infrastruttura di **NINUX Basilicata**: la guida per ricostruirla tutta, passo passo (Proxmox, DNS, OpenWISP, moduli, firmware, app), è su **[GitHub Pages](https://mikysal78.github.io/ninux-basilicata-infra/)**.
 
 Un'app Android per gestire un server [OpenWISP](https://openwisp.org) dal
 telefono, tramite le API REST di OpenWISP: dispositivi e loro stato, azioni
