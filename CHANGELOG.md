@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3
+
+- First release for Google Play: store listing, graphics and screenshots in
+  `fastlane/metadata/android`, privacy policy published with the guide.
+- Removed the `FOREGROUND_SERVICE` permission added by WorkManager: the app
+  never runs work in the foreground.
+
 ## 0.1.2
 
 - Release workflow: read the signing certificate with the output of both
